@@ -4,6 +4,9 @@
   "description": "a glorified ai-driven switch statement",
   "main": "build/index.js",
   "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "lint": "ts-standard --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

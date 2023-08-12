@@ -112,7 +112,7 @@ export class Plectimus extends EventEmitter {
     const selections = options.map((option) => option.selection)
     const option = options.find((option) => option.selection === result.selection)
 
-    if (selections.includes(result.selection) === false || option === undefined) {
+    if (!selections.includes(result.selection) || option === undefined) {
       throw new Error(`Invalid selection: ${result.selection} (possible options: ${selections.join(', ')})`)
     }
 
@@ -138,7 +138,7 @@ export class Plectimus extends EventEmitter {
 
         if (param.type === 'number') {
           const converted = Number(value)
-          if (typeof value !== 'number' && Number.isNaN(converted) as boolean) { // why is this type cast required, wth
+          if (typeof value !== 'number' && Number.isNaN(converted)) { // why is this type cast required, wth
             throw new Error(`Invalid param type: ${paramKey} (expected: ${param.type as string}, got: ${typeof value})`)
           }
           if (converted !== value) data[paramKey] = converted
