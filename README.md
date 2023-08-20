@@ -190,6 +190,12 @@ The `Plectimus` class also extends `EventEmitter`, and emits the following event
 
 - `tokenUse`: emitted when tokens are spent with the AI. Useful for metrics. It returns an object in the shape of `{ prompt, completion, total }`, all three parameters of which are the numbers of tokens spent corresponding to the prompt, the completion, and the total of the request, respectively.
 
+- `text-prompt-sent`: emitted when a text-mode driver sends a prompt. It returns the encoded prompt as a string (system message only). Useful for debugging.
+
+- `text-prompt-received`: emitted when a text-mode driver receives a completion to a prompt. It returns the raw completion as a string, before parsing the TOML. Useful for debugging.
+
+- `text-prompt-logs`: emits formatted logs of the full prompt whenever a text mode driver sends or receives a prompt. Useful for debugging.
+
 If you want to implement your own driver, you can implement either the `PlectimusTextDriver` or the `PlectimusRawDriver` interface, depending on whether you want to handle the text processing yourself or not. The `PlectimusTextDriver` interface has the following methods and parameters:
 
 - `mode`: a constant, has to be `'text'`. This is how plectimus identifies the driver.

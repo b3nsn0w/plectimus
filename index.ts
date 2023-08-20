@@ -96,13 +96,23 @@ export class Plectimus extends EventEmitter {
     let result: PlectimusResponse<string>
 
     if (this.driver.mode === 'text') {
-      const response = await this.driver.send([
+      const tomlPrompt = createTomlPrompt(options)
+      const promptMessages: PlectimusMessage[] = [
         ...messages,
         {
           role: 'system',
-          content: createTomlPrompt(options)
+          content: tomlPrompt
         }
-      ], config)
+      ]
+
+      this.emit('text-prompt-sent', tomlPrompt)
+      this.emit('text-prompt-logs', `===\nSEND\n---\n${promptMessages.map(message => `${message.role}\n---\n${message.content}`).join('\n---\n')}\n===`)
+
+      const response = await this.driver.send(promptMessages, config)
+
+      this.emit('text-prompt-received', response)
+      this.emit('text-prompt-logs', `===\nRECEIVE\n---\n${response}\n===`)
+
       result = parseToml(response)
     } else {
       result = await this.driver.send(messages, options, config)

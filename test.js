@@ -4,14 +4,18 @@ const { Plectimus } = require('.')
 
 const plectimus = new Plectimus({ driver: 'gpt-3.5', apiKey: process.env.OPENAI_API_KEY })
 
+plectimus.on('text-prompt-logs', console.log.bind(console))
+
 async function makeTodo (task) {
   const result = await plectimus.send(
-    'Break the task the user passes in down to a series of steps.',
+    'Break the task the user passes in down to a series of steps. The task to break down is the following:',
     task,
     [{
       selection: 'todos',
       params: {
-        tasks: { type: 'array', description: 'the tasks to complete' }
+        title: { type: 'string', description: 'the title of the todo list' },
+        description: { type: 'multiline', description: 'description of the task, without steps' },
+        steps: { type: 'array', description: 'the steps to complete' }
       }
     }],
     { maxTokens: 1024 }
