@@ -22,16 +22,16 @@ export const parseToml = <S extends string>(toml: string): PlectimusResponse<S> 
 export const createTomlPrompt = <S extends string>(options: PlectimusOptions<S>): string => {
   const sections = options.map((option) => `
   
-[${option.selection}]${option.description != null ? `: ${option.description}` : ''}
+[${option.selection}]${option.description != null ? ` # ${option.description}` : ''}
 ${Object.keys(option.params).map((key) => {
   const param = option.params[key]
 
   let description = param.description
-  if (param.type === 'string') description = `"${description}" (single-line)`
-  if (param.type === 'multiline') description = `"""\n${description}""" (multiline)`
-  if (param.type === 'number') description += ' (number)'
-  if (param.type === 'boolean') description += ' (boolean)'
-  if (param.type === 'array') description = `["${description}"] (array of strings)`
+  if (param.type === 'string') description = `"${description}" # (single-line)`
+  if (param.type === 'multiline') description = `"""\n${description}""" # (multiline)`
+  if (param.type === 'number') description += ' # (number)'
+  if (param.type === 'boolean') description += ' # (boolean)'
+  if (param.type === 'array') description = `["${description}"] # (array of strings)`
 
   return `${key} = ${description}`
 }).join('\n')}
